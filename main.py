@@ -35,10 +35,31 @@ for i in range(1, NUMBER_OF_PAGES):
     posts = soup.find_all('div', class_='overlay card')
 
     #Scraping Content
-       for post in posts:
+    for post in posts:
         print(f'[+] Scraping post')
         post_title = post.find('h3', class_='card-title').text
         post_category = post.find('span', class_='cat').text
         post_img = post.find('img', class_='wp-post-image')['src']
         post_link = post.find('a', class_='stretched-link')['href']
         post_date = post.find('small', class_='text-muted time').text
+
+    #Scraping Post Content    
+
+    post_content_html_text = requests.get(post_link, headers=headers).text
+    soup = BeautifulSoup(post_content_html_text, 'lxml')
+
+    post_content_paragraphs = soup.find('div', class_='article-content').find_all('p')
+
+    post_content = ''
+
+    for p in post_content_paragraphs:
+        post_content += p.text + '\n'
+
+    # Add post to Excel file
+    ws.append([post_title, post_category, post_date, post_content, post_link, post_img])
+
+    # Add font to first line of Excel file
+    for col in range(1, 7):
+        ws[get_column_letter(col) + '1'].font = Font(bold=True)
+
+    print('[+] Scraping post successfully')
