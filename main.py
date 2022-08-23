@@ -34,4 +34,11 @@ for i in range(1, NUMBER_OF_PAGES):
     soup = BeautifulSoup(html_text, 'lxml')
     posts = soup.find_all('div', class_='overlay card')
 
-   
+    #Scraping Content
+       for post in posts:
+        print(f'[+] Scraping post')
+        post_title = post.find('h3', class_='card-title').text
+        post_category = post.find('span', class_='cat').text
+        post_img = post.find('img', class_='wp-post-image')['src']
+        post_link = post.find('a', class_='stretched-link')['href']
+        post_date = post.find('small', class_='text-muted time').text
