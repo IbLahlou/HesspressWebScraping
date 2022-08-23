@@ -63,3 +63,7 @@ for i in range(1, NUMBER_OF_PAGES):
         ws[get_column_letter(col) + '1'].font = Font(bold=True)
 
     print('[+] Scraping post successfully')
+
+# Save Excel file
+wb.save('post.xlsx')
+print('[+] Finish scraping Hesspress')
